@@ -1,0 +1,16 @@
+import {model, Schema} from 'mongoose';
+
+let <%= schema_name %> = new Schema({
+    <% JSON.parse(properties).forEach(function(user){ %>
+        <%- user.property_name +':'%>
+        {
+            <%- 'type: '+user.data_type %>,
+            <%- 'required: '+user.required %>,
+            <%- 'default: '+user.default %>,
+        },
+    <% }); %>    
+
+}
+,{collection: '<%= plural_form %>'});
+
+export default model('<%= model_name %>', <%= schema_name %>);
