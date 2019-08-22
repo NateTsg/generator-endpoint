@@ -105,7 +105,7 @@ module.exports = class extends Generator {
     this.userData.forEach((data) =>{
       this.fs.copyTpl(
         this.templatePath('model.ejs'),
-        this.destinationPath(`models/${data.model_name}.js`),
+        this.destinationPath(`generated/models/${data.model_name}.js`),
         {
           schema_name:`${data.model_name}Schema`,
           model_name:`${data.model_name}`,
@@ -113,19 +113,20 @@ module.exports = class extends Generator {
           properties:JSON.stringify(data.properties)
         }
       );
-
+      
+      this.fs.copyTpl(
+        this.templatePath('controller.ejs'),
+        this.destinationPath(`generated/controllers/${data.model_name}Controller.js`),
+        {
+          schema_name:`${data.model_name}Schema`,
+          model_name:`${data.model_name}`,
+          plural_form:`${data.model_name}s`,
+          properties:JSON.stringify(data.properties)
+        }
+      );
     })
 
-    this.fs.copyTpl(
-      this.templatePath('model.ejs'),
-      this.destinationPath('generated/models/temp.js'),
-      {
-        schema_name:"CustomerSchema",
-        model_name:"Customer",
-        plural_form:"customers",
-        properties:'[{"name":"bill", "age":"26"}, {"name":"jeff", "age":"32"}]'
-      }
-    );
+    
   }
   install() {
     // this.installDependencies();
