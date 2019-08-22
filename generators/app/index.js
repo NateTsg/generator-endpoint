@@ -68,7 +68,7 @@ module.exports = class extends Generator {
       {
         type: 'input',
         name: 'name',
-        message: 'What is the property name',
+        message: '  What is the property name',
       }
      
     ]
@@ -81,18 +81,18 @@ module.exports = class extends Generator {
       {
         type: 'list',
         name: 'data_type',
-        message: 'What is the property type',
+        message: '    What is the property type',
         choices: [ "Jumbo", "Large", "Standard", "Medium", "Small" ]
       },
       {
         type: 'input',
         name: 'default',
-        message: 'What is the default value',
+        message: '    What is the default value',
       },
       {
         type: 'confirm',
         name: 'required',
-        message: 'is the property required',
+        message: '    is the property required',
       }
     ]
     var answer = await this.prompt(prompts)
@@ -118,7 +118,7 @@ module.exports = class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath('model.ejs'),
-      this.destinationPath('models/temp.js'),
+      this.destinationPath('generated/models/temp.js'),
       {
         schema_name:"CustomerSchema",
         model_name:"Customer",
