@@ -31,6 +31,7 @@ module.exports = class extends Generator {
         property_name = await this._ask_property_name()
         if(property_name.name.length > 0){
           answer = await this._ask_property()
+          console.log(answer)
           singleModel.properties.push({
             property_name:property_name.name,
             data_type:answer.data_type,
@@ -64,6 +65,7 @@ module.exports = class extends Generator {
 
 
   async _ask_property_name(){
+   
     let prompts = [
       {
         type: 'input',
@@ -76,13 +78,14 @@ module.exports = class extends Generator {
     return answer
   }
   async _ask_property(){
+     console.log("======------===== ASkkkk")
     // var done = this.async()
     let prompts = [
       {
         type: 'list',
         name: 'data_type',
         message: '    What is the property type',
-        choices: [ "Jumbo", "Large", "Standard", "Medium", "Small" ]
+        choices: [ "String", "Large", "Standard", "Medium", "Small" ]
       },
       {
         type: 'input',
@@ -105,7 +108,7 @@ module.exports = class extends Generator {
     this.userData.forEach((data) =>{
       this.fs.copyTpl(
         this.templatePath('model.ejs'),
-        this.destinationPath(`generated/models/${data.model_name}.js`),
+        this.destinationPath(`generated/ThisApp/src/models/${data.model_name}.js`),
         {
           schema_name:`${data.model_name}Schema`,
           model_name:`${data.model_name}`,
@@ -116,7 +119,7 @@ module.exports = class extends Generator {
       
       this.fs.copyTpl(
         this.templatePath('controller.ejs'),
-        this.destinationPath(`generated/controllers/${data.model_name}Controller.js`),
+        this.destinationPath(`generated/ThisApp/src/controllers/${data.model_name}Controller.js`),
         {
           schema_name:`${data.model_name}Schema`,
           model_name:`${data.model_name}`,
@@ -125,10 +128,79 @@ module.exports = class extends Generator {
         }
       );
     })
-
+    this._writeDefaults()
     
+  }
+
+  async _writeDefaults(){
+    //Config
+    this.fs.copyTpl(
+      this.templatePath('configs/config.js'),
+      this.destinationPath(`generated/ThisApp/src/configs/config.js`),
+      {
+        app_name:`immerce`
+      }
+    );
+    this.fs.copyTpl(
+      this.templatePath('configs/initializeDb.js'),
+      this.destinationPath(`generated/ThisApp/src/configs/initializeDb.js`),
+      {
+        app_name:`immerce`
+      }
+    );
+    //middlewares
+    this.fs.copyTpl(
+      this.templatePath('middlewares/AuthMiddleware.js'),
+      this.destinationPath(`generated/ThisApp/src/middlewares/AuthMiddleware.js`),
+      {
+        app_name:`immerce`
+      }
+    );
+    //routes
+    this.fs.copyTpl(
+      this.templatePath('routes/routes.js'),
+      this.destinationPath(`generated/ThisApp/src/routes/routes.js`),
+      {
+        models:JSON.stringify(this.userData)
+      }
+    );
+    //default model
+    this.fs.copyTpl(
+      this.templatePath('models/User.js'),
+      this.destinationPath(`generated/ThisApp/src/models/User.js`),
+      {
+        app_name:`immerce`
+      }
+    );
+    //default controller
+    this.fs.copyTpl(
+      this.templatePath('controllers/UserController.js'),
+      this.destinationPath(`generated/ThisApp/src/controllers/UserController.js`),
+      {
+        app_name:`immerce`
+      }
+    );
+    //index
+    this.fs.copyTpl(
+      this.templatePath('index.js'),
+      this.destinationPath(`generated/ThisApp/src/index.js`),
+      {
+        app_name:`immerce`
+      }
+    );
+    //package
+    this.fs.copyTpl(
+      this.templatePath('package.json'),
+      this.destinationPath(`generated/ThisApp//package.json`),
+      {
+        app_name:`immerce`
+      }
+    );
+
+  
   }
   install() {
     // this.installDependencies();
+    // this.npmInstall();
   }
 };

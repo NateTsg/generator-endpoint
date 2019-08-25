@@ -1,0 +1,114 @@
+import async from 'async';
+import express from 'express';
+import passport from 'passport';
+
+import <%= model_name %> from '../models/<%= model_name %>'
+
+import config from '../configs/config';
+import authMiddleware from '../middlewares/AuthMiddleware';
+
+
+let router = express.Router();
+
+/**
+ * Retrieve All Categories
+ */
+router.get('/', 
+    // passport.authenticate('jwt', {session: false}), 
+    // authMiddleware.checkAccessLevel(config.roles.admin), 
+    (request, response, next) => {
+
+    <%= model_name %>.find({}, (error, categories) => {
+        if (error) {
+            next()
+        }
+        else {
+            response.status(200).json(categories);
+        }
+    });
+});
+
+/**
+ * Retrieve <%= model_name %> by ID
+ */
+router.get('/:id', 
+    // passport.authenticate('jwt', {session: false}), 
+    // authMiddleware.checkAccessLevel(config.roles.admin), 
+    (request, response, next) => {
+
+    <%= model_name %>.findById(request.params.id, (error, category) => {
+        if (error) {
+            next()
+        }
+        else {
+            response.status(200).json(category);
+        }
+    });
+});
+
+/**
+ * Create <%= model_name %>
+ * @param  {name, description}
+ */
+router.post('/', 
+    // passport.authenticate('jwt', {session: false}), 
+    // authMiddleware.checkAccessLevel(config.roles.admin), 
+    (request, response) => {
+
+    let new<%= model_name %> = new <%= model_name %>();
+    <% JSON.parse(properties).forEach(function(user){ %>
+    new<%= model_name %>.<%-user.property_name %> = request.body.<%-user.property_name %> ;
+    <% }); %>  
+    new<%= model_name %>.save((error, category) => {
+        if (error) {
+            next()
+        }
+        else {
+            response.status(200).json(category);
+        }
+    });
+});
+
+/**
+ * Update <%= model_name %>
+ * @param  {name, description}
+ */
+router.put('/:id', 
+    passport.authenticate('jwt', {session: false}), 
+    authMiddleware.checkAccessLevel(config.roles.admin), 
+    (request, response) => {
+
+    async.waterfall([
+        (done) => {
+            <%= model_name %>.findById(request.params.id, (error, category) => {
+                if (error) {
+                    
+                    done(error);
+                }
+                else {
+                    done(null, category);
+                }
+            });
+        },
+        (<%= model_name %>, done) => {
+            <% JSON.parse(properties).forEach(function(user){ %>
+            <%= model_name %>.<%-user.property_name %> = request.body.<%-user.property_name %> ;
+            <% }); %> 
+            <%= model_name %>.save((error, updated<%= model_name %>) => {
+                if (error) {
+                    next()
+                }
+                else {
+                    response.status(200).json(updated<%= model_name %>);
+                }
+            });
+        }
+    ], (error) => {
+        logError(error);
+        next()
+    });
+});
+
+
+
+export default router;
