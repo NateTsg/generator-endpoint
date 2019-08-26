@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "it generates endpoint from a mongooose model",
   "homepage": "",
-  "author": "",
+  "author": "Nathan Tsegaye",
   "files": [
     "generators"
   ],
