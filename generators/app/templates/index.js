@@ -36,6 +36,11 @@ initializeDb();
 // Routes
 app.use('/v1', routes);
 
+//Error Handling
+app.use(function(err,req,res,next){
+
+    res.status(422).json(err)
+})
 app.listen(config.app.port, function() {
     console.log('<%= app_name%> API Running on port ' + config.app.port);
 });

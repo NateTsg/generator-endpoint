@@ -20,7 +20,7 @@ router.post('/login',
 router.post('/checkEmailIsUnique', (request, response,next) => {
     User.findOne({email: request.body.email}, (error, user) => {
         if (error) {
-            next()
+            next(error,request,response)
         }
         else {
             return response.status(200).send({isAvailable: false});
