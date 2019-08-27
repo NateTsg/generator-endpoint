@@ -1,5 +1,5 @@
 # generator-endpoint [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> it generates endpoint from a mongooose model
+> it generates base template to start a node api project
 
 ## Installation
 
@@ -10,17 +10,34 @@ npm install -g yo
 npm install -g generator-endpoint
 ```
 
-Then generate your new project:
-
+Start the generator:
 ```bash
 yo endpoint
 ```
+Then generate your new project by answering the following prompts.
 
+Note that this template will generate files in the current directory, so be sure to change to a new directory first if you don't want to overwrite existing files.
+
+That'll generate a project with all the common tools setup. This includes:
+
+- Filled package.json file
+- Moongoose models
+- Endpoints for those models
+- Default User Model with authentication
+
+License
+
+### Running your server
+
+First go into the directory of your application and install the dependencies
+```bash
+npm install
+```
+Then run the project using
+```bash
+npm run dev
+```
 ## Getting To Know Yeoman
-
- * Yeoman has a heart of gold.
- * Yeoman is a person with feelings and opinions, but is very easy to work with.
- * Yeoman can be too opinionated at times but is easily convinced not to be.
  * Feel free to [learn more about Yeoman](http://yeoman.io/).
 
 ## License

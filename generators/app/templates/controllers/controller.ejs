@@ -11,7 +11,7 @@ import authMiddleware from '../middlewares/AuthMiddleware';
 let router = express.Router();
 
 /**
- * Retrieve All Categories
+ * Retrieve All <%= plural_form %>
  */
 router.get('/', 
     // passport.authenticate('jwt', {session: false}), 
@@ -48,7 +48,11 @@ router.get('/:id',
 
 /**
  * Create <%= model_name %>
- * @param  {name, description}
+ * @param  {
+    <% JSON.parse(properties).forEach(function(user){ %>
+    <%-user.property_name %>
+    <% }); %>,
+ }
  */
 router.post('/', 
     // passport.authenticate('jwt', {session: false}), 
@@ -71,11 +75,15 @@ router.post('/',
 
 /**
  * Update <%= model_name %>
- * @param  {name, description}
+ * @param  {
+    <% JSON.parse(properties).forEach(function(user){ %>
+*   <%-user.property_name %>
+    <% }); %>,
+ }
  */
 router.put('/:id', 
-    passport.authenticate('jwt', {session: false}), 
-    authMiddleware.checkAccessLevel(config.roles.admin), 
+    //passport.authenticate('jwt', {session: false}), 
+    //authMiddleware.checkAccessLevel(config.roles.admin), 
     (request, response, next) => {
 
     async.waterfall([
@@ -104,7 +112,6 @@ router.put('/:id',
             });
         }
     ], (error) => {
-        logError(error);
         next(error,request,response)
     });
 });

@@ -6,7 +6,10 @@ let <%= schema_name %> = new Schema({
         {
             <%- 'type: '+user.data_type %>,
             <%- 'required: '+user.required %>,
-            default: '<%- user.default %>'
+            <% if (user.default.length > 0){%>
+                default: '<%- user.default %>'
+            <%} %>
+         
         },
     <% }); %>    
 
