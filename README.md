@@ -9,12 +9,14 @@ First, install [Yeoman](http://yeoman.io) and generator-endpoint using [npm](htt
 npm install -g yo
 npm install -g generator-endpoint
 ```
-
+### Usage
 Start the generator:
 ```bash
 yo endpoint
 ```
 Then generate your new project by answering the following prompts.
+
+![Alt text](https://media.giphy.com/media/IgMPE75aeZbpNEpSIB/giphy.gif "Generator endpoint usage")
 
 Note that this template will generate files in the current directory, so be sure to change to a new directory first if you don't want to overwrite existing files.
 
